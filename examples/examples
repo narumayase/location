@@ -1,0 +1,29 @@
+curl -v -d '{"longitude":-58.45678, "latitude":-34.12345, "address":"buenos aires 1234"}' POST http://localhost:8080/branch-offices/branch-office
+curl -v -d '{"longitude":-64.18105, "latitude":-31.4135, "address":"cordoba 1234"}' POST http://localhost:8080/branch-offices/branch-office
+curl -v -d '{"longitude":-68.31591, "latitude":-54.81084, "address":"ushuaia 1597"}' POST http://localhost:8080/branch-offices/branch-office
+
+curl -v GET http://localhost:8080/branch-offices/branch-office/1
+curl -v GET 'http://localhost:8080/branch-offices/nearest?longitude=-58.45678&latitude=-34.12345'
+curl -v GET 'http://localhost:8080/branch-offices/nearest?longitude=-68.31591&latitude=-54.81084'
+
+Salta:
+curl -v GET 'http://localhost:8080/branch-offices/nearest?longitude=-65.41166&latitude=-24.7859'
+
+generate mocks:
+go generate ./...
+
+coverage:
+go test -coverprofile=coverage.out ./...
+go tool cover -func=coverage.out
+
+docker install:
+sudo apt install docker.io
+sudo systemctl start docker
+sudo systemctl enable docker
+docker --version
+
+docker:
+sudo docker image build -t location:0.0.1 .
+sudo docker run --network host location:0.0.1
+sudo docker ps
+sudo exec -it 5076b61fca87 /bin/sh

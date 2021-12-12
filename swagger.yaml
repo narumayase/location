@@ -1,0 +1,104 @@
+swagger: "2.0"
+info:
+  description: "API REST para saber en base a un punto (lat, long), la sucursal más cercana al mismo."
+  version: "1.0.0"
+  title: "Location"
+  contact:
+    email: "ayelenbaglietto@gmail.com"
+basePath: "/branch-offices"
+tags:
+  - name: "sucursal"
+paths:
+  /branch-office:
+    post:
+      tags:
+        - "sucursal"
+      summary: "Agregar una nueva sucursal"
+      description: "Permite crear una sucursal con su latitud, longitud y dirección. Latitud y longitud expresadas en coordenadas decimales simples, ejemplo de Buenos Aires: latitud = -34.12345 y longitud = -58.45678"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/BranchOffice"
+      responses:
+        200:
+          description: "sucursal creada exitosamente"
+          schema:
+            $ref: "#/definitions/BranchOffice"
+        400:
+          description: "request mal formado (tipos de dato) o sucursal ya existente"
+        500:
+          description: "error interno"
+  /branch-office/{id}:
+    get:
+      tags:
+        - "sucursal"
+      summary: "Buscar una sucursal por id"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "ID de la sucursal a buscar"
+          required: true
+          type: "integer"
+      responses:
+        200:
+          description: "sucursal encontrada exitosamente"
+          schema:
+            $ref: "#/definitions/BranchOffice"
+        400:
+          description: "request mal formado, el id no respeta el tipo de dato"
+        500:
+          description: "error interno"
+  /nearest:
+    get:
+      tags:
+        - "sucursal"
+      summary: "Obtener la sucursal más cercana"
+      description: "Permite buscar la sucursal más cercana al punto (latitud y longitud) elegido. Latitud y longitud expresadas en coordenadas decimales simples, ejemplo de Buenos Aires: latitud = -34.12345 y longitud = -58.45678"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "latitude"
+          in: "query"
+          required: true
+          type: "number"
+        - name: "longitude"
+          in: "query"
+          required: true
+          type: "number"
+      responses:
+        200:
+          description: "sucursal encontrada exitosamente"
+          schema:
+            $ref: "#/definitions/BranchOffice"
+        400:
+          description: "request mal formado, latitud o longitud no respetan el tipo de dato"
+        500:
+          description: "error interno"
+definitions:
+  BranchOffice:
+    type: "object"
+    required:
+      - "latitude"
+      - "longitude"
+      - "address"
+    properties:
+      id:
+        type: "integer"
+        format: "uint"
+      latitude:
+        type: "number"
+        format: "float64"
+      longitude:
+        type: "number"
+        format: "float64"
+      address:
+        type: "string"
+        description: "la dirección de la sucursal"

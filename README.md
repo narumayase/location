@@ -1,38 +1,38 @@
 # location
-API REST para saber en base a un punto (lat, long), la sucursal más cercana al mismo.
+REST API to know, based on a point (latitude, longitude), the closest branch office to it.
 
-## Construido con 🛠
+## Built on 🛠
 
-* [Golang](https://golang.org/) - Lenguaje de programación.
-* [SQLite](https://www.sqlite.org/) - Base de datos.
-* [Docker](https://www.docker.com/) - Manejador de contenedores.
-* [Swagger](https://swagger.io/) - Documentación de la API.
+* [Golang](https://golang.org/)
+* [SQLite](https://www.sqlite.org/)
+* [Docker](https://www.docker.com/)
+* [Swagger](https://swagger.io/)
 
-## Comenzando 🚀
+## Starting 🚀
 
-### Pre-requisitos 
+### Requirements
 
-Herramientas necesarias para la ejecución local del servicio:
+Necessary tools for the local execution of the service:
 
 - Go go1.15.6+.
 - Docker 19.03.6+.
 
-### Ejemplo ejecutando localmente
+### Example running locally
 
-* Configurar variable de entorno LOCATION_ENVIRONMENT=local. 
+* Set environment variable LOCATION_ENVIRONMENT=local. 
 
 ```
 $ export LOCATION_ENVIRONMENT=local
 ```
 
-* Ejecutar: 
+* Run: 
 
 ```
 $ go build
 $ go run main.go
 ```
 
-Respuesta:
+Response:
 
 ```
 [GIN-debug] GET    /branch-offices/branch-office/:id --> location/pkg/routes.(*handler).Get-fm (3 handlers)
@@ -42,7 +42,7 @@ Respuesta:
 [GIN-debug] Listening and serving HTTP on :8080
 ```
 
-* Para ejecutar los tests:
+* To run tests:
 
 ```
 $ go test ./...
@@ -58,7 +58,7 @@ ok  	location/pkg/cmd	0.008s
 ok  	location/pkg/routes	0.012s
 ```
 
-* Para evaluar coverage:
+* To check coverage:
 
 ```
 $ go test -coverprofile=coverage.out ./...
@@ -74,7 +74,7 @@ ok  	location/pkg/cmd	0.008s	coverage: 90.9% of statements
 ok  	location/pkg/routes	0.011s	coverage: 77.1% of statements
 ```
 
-* Coverage de manera más detallada:
+* Detailed coverage:
 
 ```
 $ go tool cover -func=coverage.out
@@ -97,7 +97,7 @@ location/pkg/routes/route.go:82:	Nearest		100.0%
 total:					(statements)	82.7%
 ```
 
-### Ejemplo usando imagen docker
+### Example using docker image:
 
 ```
 $ sudo docker image build -t location:0.0.1 .
@@ -106,20 +106,20 @@ $ sudo docker run --network host location:0.0.1
 
 ### API 
 
-Documentación Swagger más detallada en el archivo [swagger.yaml](https://github.com/justskythings/location/blob/master/swagger.yaml).
+More detailed Swagger documentation in the file [swagger.yaml](https://github.com/narumayase/location/blob/master/swagger.yaml).
 
-Esta API sirve para dar de alta sucursales, para consultar la sucursal por id y también para encontrar la sucursal más cercana a un punto dado. Este punto debe estar expresado en latitud y longitud en coordenadas decimales simples con el siguiente formato:
+This API is used to register branch offices, to get the branch by id and also to find the closest branch office to a given point. This point must be expressed in latitude and longitude in simple decimal coordinates with the following format:
 
-Ejemplo de ubicación de Buenos Aires:
+Buenos Aires location example:
 
 ```
-Latitud:-34.6083
-Longitud:-58.3712
+Latitude:-34.6083
+Longitude:-58.3712
 ```
 
-* Creación de sucursal
+* Branch office creation
 
-Permite crear una sucursal con su latitud, longitud y dirección.
+Allows you to create a branch with its latitude, longitude and address.
 
 ```
 request:
@@ -144,13 +144,13 @@ response:
 }
 ```
 
-Ejemplo:
+Example:
 
 ```
 $ curl -v -d '{"longitude":-58.45678, "latitude":-34.12345, "address":"buenos aires 1234"}' POST http://localhost:8080/branch-offices/branch-office
 ```
 
-Respuesta:
+Response:
 
 ```
 * Rebuilt URL to: POST/
@@ -177,9 +177,9 @@ curl: (6) Could not resolve host: POST
 {"id":1,"longitude":-58.45678,"latitude":-34.12345,"address":"buenos aires 1234"}
 ```
 
-* Obtener sucursal por ID
+* Get branch office by ID
 
-Permite obtener los datos de la sucursal conociendo su id.
+It allows to obtain the data of the branch knowing its id.
 
 ```
 request:
@@ -197,13 +197,13 @@ response:
 }
 ```
 
-Ejemplo:
+Example:
 
 ```
 $ curl -v GET http://localhost:8080/branch-offices/branch-office/1
 ```
 
-Respuesta:
+Response:
 
 ```
 * Rebuilt URL to: GET/
@@ -227,9 +227,9 @@ curl: (6) Could not resolve host: GET
 {"id":1,"longitude":-58.45678,"latitude":-34.12345,"address":"buenos aires 1234"}
 ```
 
-* Buscar la sucursal más cercana
+* Find the nearest branch office
 
-Permite buscar la sucursal más cercana al punto (latitud y longitud) elegido.
+Allows you to search for the closest branch to the chosen point (latitude and longitude).
 
 ```
 request:
@@ -247,13 +247,13 @@ response:
 }
 ```
 
-Ejemplo:
+Example:
 
 ```
 $ curl -v GET 'http://localhost:8080/branch-offices/nearest?longitude=-58.45678&latitude=-34.12345'
 ```
 
-Respuesta:
+Response:
 
 ```
 * Rebuilt URL to: GET/
@@ -279,13 +279,12 @@ curl: (6) Could not resolve host: GET
 
 ## Roadmap
 
-- [x] Estructura de proyecto
-- [x] Pensar algoritmo 
+- [x] Project Structure
+- [x] Think algorithm
 - [x] Readme
-- [x] Algoritmo terminado 
-- [x] Tipos de datos de latitud y longitud
-- [x] Test unitarios 
+- [x] Algorithm finished
+- [x] Latitude and longitude data types
+- [x] Unit tests
 - [x] Logs
-- [x] Dockerizar
-- [x] Documentación Swagger
- 
+- [x] Dockerize
+- [x] Swagger Documentation
